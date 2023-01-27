@@ -17,11 +17,12 @@ func process(wg *sync.WaitGroup, picture *Picture) {
 	toGray(picture)
 	toMono(picture)
 	toSeparate(picture)
+
+	log.Printf("Done: %q\n", picture.FileName)
 	wg.Done()
 }
 
 func toGray(picture *Picture) {
-	log.Printf("Processing %s%s: Gray\n", picture.FileName, picture.Extension)
 	convertType := "gray"
 	input, output := picture.GetInputAndOutputNames(convertType)
 	cmd := exec.Command("convert", input, "-colorspace", "Gray", output)
@@ -29,7 +30,6 @@ func toGray(picture *Picture) {
 }
 
 func toMono(picture *Picture) {
-	log.Printf("Processing %s%s: Monochrome\n", picture.FileName, picture.Extension)
 	convertType := "mono"
 	input, output := picture.GetInputAndOutputNames(convertType)
 	cmd := exec.Command("convert", input, "-monochrome", output)
@@ -37,7 +37,6 @@ func toMono(picture *Picture) {
 }
 
 func toSeparate(picture *Picture) {
-	log.Printf("Processing %s%s: Separate\n", picture.FileName, picture.Extension)
 	convertType := "separate"
 	input, output := picture.GetInputAndOutputNames(convertType)
 	cmd := exec.Command("convert", input, "-separate", output)
@@ -50,6 +49,4 @@ func toImage(cmd *exec.Cmd, picture *Picture, convertType string) {
 	if err != nil {
 		log.Fatalf("There was an error converting %q to %s: %v\n", picture.FileName, convertType, err)
 	}
-
-	log.Printf("Done: %q\n", picture.FileName)
 }

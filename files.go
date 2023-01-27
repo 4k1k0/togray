@@ -7,6 +7,12 @@ import (
 	"strings"
 )
 
+var validExtensions = map[string]struct{}{
+	".jpg":  {},
+	".jpeg": {},
+	".png":  {},
+}
+
 func getImagesNames(path string) []*Picture {
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
@@ -36,5 +42,6 @@ func getFilename(filename, extension string) string {
 }
 
 func isPicture(extension string) bool {
-	return extension == ".jpg" || extension == ".jpeg" || extension == ".png"
+	_, ok := validExtensions[strings.ToLower(extension)]
+	return ok
 }
