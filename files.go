@@ -22,7 +22,7 @@ func getImagesNames(path string) []*Picture {
 	pictures := make([]*Picture, 0)
 
 	for _, file := range files {
-		extension := getFileExtension(file.Name())
+		extension := filepath.Ext(file.Name())
 		filename := getFilename(file.Name(), extension)
 		if isPicture(extension) {
 			picture := NewPicture(filename, extension, path)
@@ -31,10 +31,6 @@ func getImagesNames(path string) []*Picture {
 	}
 
 	return pictures
-}
-
-func getFileExtension(filename string) string {
-	return filepath.Ext(filename)
 }
 
 func getFilename(filename, extension string) string {
